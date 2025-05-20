@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   Card, Table, Button, Input, Select,
-  Space, Modal, Form, message, Popconfirm, Tag, Alert
+  Space, Modal, Form, message, Popconfirm, Tag, Alert, Dropdown
 } from 'antd';
 import {
   PlusOutlined, SearchOutlined,
   EditOutlined, DeleteOutlined, UserOutlined,
-  ReloadOutlined
+  ReloadOutlined, UploadOutlined, DownloadOutlined, MenuOutlined
 } from '@ant-design/icons';
 import {
   getUsers, getUser, updateUser, deleteUser
@@ -16,6 +16,7 @@ import type { User } from '../../api/auth';
 import type { UserUpdateParams } from '../../api/users';
 import { useAuth } from '../../contexts/AuthContext';
 import { getToken, isAdmin } from '../../utils/auth';
+import ImportModal from '../../components/ImportModal';
 
 const { Option } = Select;
 
@@ -30,6 +31,7 @@ const Users: React.FC = () => {
   const [modalTitle, setModalTitle] = useState('新建用户');
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [importModalVisible, setImportModalVisible] = useState(false);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -262,12 +264,58 @@ const Users: React.FC = () => {
     },
   ];
 
+  // 处理导入模态框
+  const handleImportModalOpen = () => {
+    setImportModalVisible(true);
+  };
+
+  const handleImportModalClose = () => {
+    setImportModalVisible(false);
+  };
+
+  const handleImportSuccess = () => {
+    message.success('用户导入成功');
+    fetchUsers();
+  };
+
+  // 导入说明文本
+  const importHelpText = (
+    <div>
+      <p>请按照以下格式准备CSV文件：</p>
+      <p>1. 必须包含以下列：username(用户名), password(密码), email(邮箱), role(角色)</p>
+      <p>2. 可选列：full_name(姓名), phone(电话)</p>
+      <p>3. 角色必须是以下值之一：admin, manager, worker</p>
+      <p>4. 用户名必须唯一，否则导入将失败</p>
+    </div>
+  );
+
+  // 下拉菜单项
+  const actionItems = [
+    {
+      key: 'import',
+      label: '批量导入',
+      icon: <UploadOutlined />,
+      onClick: handleImportModalOpen
+    },
+    {
+      key: 'download-template',
+      label: '下载模板',
+      icon: <DownloadOutlined />,
+      onClick: () => window.open('/templates/users_template.csv')
+    }
+  ];
+
   return (
     <div>
       <Card
         title="用户管理"
         extra={
           <Space>
+            <Dropdown menu={{ items: actionItems }}>
+              <Button icon={<MenuOutlined />}>
+                批量操作
+              </Button>
+            </Dropdown>
             <Button
               icon={<ReloadOutlined />}
               onClick={fetchUsers}
@@ -412,6 +460,18 @@ const Users: React.FC = () => {
           )}
         </Form>
       </Modal>
+
+      {/* 批量导入模态框 */}
+      <ImportModal
+        visible={importModalVisible}
+        title="批量导入用户"
+        endpoint="/api/users/import"
+        templateUrl="http://localhost:8000/templates/users_template.csv"
+        onClose={handleImportModalClose}
+        onSuccess={handleImportSuccess}
+        acceptedFileTypes=".csv"
+        helpText={importHelpText}
+      />
     </div>
   );
 };

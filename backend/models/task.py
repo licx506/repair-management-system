@@ -15,9 +15,17 @@ class Task(Base):
     __tablename__ = "tasks"
 
     id = Column(Integer, primary_key=True, index=True)
-    project_id = Column(Integer, ForeignKey("projects.id"))
-    title = Column(String, index=True)
-    description = Column(String, nullable=True)
+    project_id = Column(Integer, ForeignKey("projects.id"), nullable=True)
+    title = Column(String, index=True)  # 工单主题
+    description = Column(String, nullable=True)  # 工单内容
+    attachment = Column(String, nullable=True)  # 派单附件
+    work_list = Column(String, nullable=True)  # 工作量清单
+    company_material_list = Column(String, nullable=True)  # 甲供材清单
+    self_material_list = Column(String, nullable=True)  # 自购料清单
+    labor_cost = Column(Float, default=0.0)  # 施工费
+    material_cost = Column(Float, default=0.0)  # 材料费
+    company_material_cost = Column(Float, default=0.0)  # 甲供材料费
+    self_material_cost = Column(Float, default=0.0)  # 自购材料费
     status = Column(String, default=TaskStatus.PENDING.value)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

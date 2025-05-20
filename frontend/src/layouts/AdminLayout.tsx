@@ -44,12 +44,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       icon: <ProjectOutlined />,
       label: <Link to="/admin/projects">维修项目</Link>,
     },
-    // 暂时注释掉工单管理页面，因为尚未实现
-    // {
-    //   key: '/admin/tasks',
-    //   icon: <ToolOutlined />,
-    //   label: <Link to="/admin/tasks">工单管理</Link>,
-    // },
+    {
+      key: '/admin/tasks',
+      icon: <ToolOutlined />,
+      label: <Link to="/admin/tasks">工单管理</Link>,
+    },
     {
       key: '/admin/materials',
       icon: <ShoppingOutlined />,
@@ -74,6 +73,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       key: '/admin/users',
       icon: <UserOutlined />,
       label: <Link to="/admin/users">用户管理</Link>,
+    },
+    {
+      key: '/admin/settings',
+      icon: <SettingOutlined />,
+      label: <Link to="/admin/settings">系统设置</Link>,
     },
   ];
 

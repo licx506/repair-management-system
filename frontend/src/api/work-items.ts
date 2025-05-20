@@ -7,6 +7,8 @@ export interface WorkItem {
   name: string;
   description?: string;
   unit: string;
+  skilled_labor_days: number;
+  unskilled_labor_days: number;
   unit_price: number;
   is_active: boolean;
   created_at: string;
@@ -19,6 +21,8 @@ export interface WorkItemCreateParams {
   name: string;
   description?: string;
   unit: string;
+  skilled_labor_days?: number;
+  unskilled_labor_days?: number;
   unit_price: number;
 }
 
@@ -28,6 +32,8 @@ export interface WorkItemUpdateParams {
   name?: string;
   description?: string;
   unit?: string;
+  skilled_labor_days?: number;
+  unskilled_labor_days?: number;
   unit_price?: number;
   is_active?: boolean;
 }

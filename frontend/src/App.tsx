@@ -26,15 +26,18 @@ import MobileCompleted from './pages/mobile/MobileCompleted';
 import PCHome from './pages/pc/PCHome';
 import PCTasks from './pages/pc/PCTasks';
 import PCTaskDetail from './pages/pc/PCTaskDetail';
+import PCTaskComplete from './pages/pc/PCTaskComplete';
 
 // 管理员页面
 import Dashboard from './pages/admin/Dashboard';
 import Projects from './pages/admin/Projects';
+import Tasks from './pages/admin/Tasks';
 import Materials from './pages/admin/Materials';
 import WorkItems from './pages/admin/WorkItems';
 import Teams from './pages/admin/Teams';
 import Statistics from './pages/admin/Statistics';
 import Users from './pages/admin/Users';
+import Settings from './pages/admin/Settings';
 
 // 路由守卫组件
 const ProtectedRoute = ({ children, requiredAuth = true, adminOnly = false }: {
@@ -141,6 +144,13 @@ function App() {
                 </PCLayout>
               </ProtectedRoute>
             } />
+            <Route path="/pc/tasks/:id/complete" element={
+              <ProtectedRoute>
+                <PCLayout>
+                  <PCTaskComplete />
+                </PCLayout>
+              </ProtectedRoute>
+            } />
 
             {/* 管理员路由 */}
             <Route path="/admin/dashboard" element={
@@ -154,6 +164,13 @@ function App() {
               <ProtectedRoute adminOnly={true}>
                 <AdminLayout>
                   <Projects />
+                </AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/tasks" element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminLayout>
+                  <Tasks />
                 </AdminLayout>
               </ProtectedRoute>
             } />
@@ -189,6 +206,13 @@ function App() {
               <ProtectedRoute adminOnly={true}>
                 <AdminLayout>
                   <Users />
+                </AdminLayout>
+              </ProtectedRoute>
+            } />
+            <Route path="/admin/settings" element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminLayout>
+                  <Settings />
                 </AdminLayout>
               </ProtectedRoute>
             } />

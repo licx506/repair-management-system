@@ -2,9 +2,15 @@ import api from './api';
 
 export interface Task {
   id: number;
-  project_id: number;
+  project_id?: number;
   title: string;
   description?: string;
+  attachment?: string;
+  work_list?: string;
+  company_material_list?: string;
+  self_material_list?: string;
+  labor_cost: number;
+  material_cost: number;
   status: string;
   created_at: string;
   updated_at?: string;
@@ -41,14 +47,27 @@ export interface TaskDetail extends Task {
 }
 
 export interface TaskCreateParams {
-  project_id: number;
+  project_id?: number;
   title: string;
   description?: string;
+  attachment?: string;
+  work_list?: string;
+  company_material_list?: string;
+  self_material_list?: string;
+  labor_cost?: number;
+  material_cost?: number;
 }
 
 export interface TaskUpdateParams {
+  project_id?: number;
   title?: string;
   description?: string;
+  attachment?: string;
+  work_list?: string;
+  company_material_list?: string;
+  self_material_list?: string;
+  labor_cost?: number;
+  material_cost?: number;
   status?: string;
   assigned_to_id?: number;
   team_id?: number;

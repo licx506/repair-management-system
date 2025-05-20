@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getTasks } from '../../api/tasks';
 import type { Task } from '../../api/tasks';
 import { SearchOutlined } from '@ant-design/icons';
-
-const { TabPane } = Tabs;
+import type { TabsProps } from 'antd';
 
 const MobileTasks: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -77,98 +76,113 @@ const MobileTasks: React.FC = () => {
         allowClear
       />
 
-      <Tabs defaultActiveKey="pending">
-        <TabPane tab="待接单" key="pending">
-          {filteredPendingTasks.length > 0 ? (
-            <List
-              itemLayout="horizontal"
-              dataSource={filteredPendingTasks}
-              renderItem={task => (
-                <List.Item
-                  onClick={() => navigate(`/mobile/tasks/${task.id}`)}
-                  style={{ cursor: 'pointer' }}
-                  actions={[
-                    <Button
-                      type="primary"
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/mobile/tasks/${task.id}/accept`);
-                      }}
-                    >
-                      接单
-                    </Button>
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>{task.title}</span>
-                        {getStatusTag(task.status)}
-                      </div>
-                    }
-                    description={
-                      <div>
-                        <div>{task.description || '无描述'}</div>
-                        <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
-                          创建时间: {new Date(task.created_at).toLocaleString()}
-                        </div>
-                      </div>
-                    }
+      <Tabs
+        defaultActiveKey="pending"
+        items={[
+          {
+            key: 'pending',
+            label: '待接单',
+            children: (
+              <>
+                {filteredPendingTasks.length > 0 ? (
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={filteredPendingTasks}
+                    renderItem={task => (
+                      <List.Item
+                        onClick={() => navigate(`/mobile/tasks/${task.id}`)}
+                        style={{ cursor: 'pointer' }}
+                        actions={[
+                          <Button
+                            type="primary"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/mobile/tasks/${task.id}/accept`);
+                            }}
+                          >
+                            接单
+                          </Button>
+                        ]}
+                      >
+                        <List.Item.Meta
+                          title={
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span>{task.title}</span>
+                              {getStatusTag(task.status)}
+                            </div>
+                          }
+                          description={
+                            <div>
+                              <div>{task.description || '无描述'}</div>
+                              <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
+                                创建时间: {new Date(task.created_at).toLocaleString()}
+                              </div>
+                            </div>
+                          }
+                        />
+                      </List.Item>
+                    )}
                   />
-                </List.Item>
-              )}
-            />
-          ) : (
-            <Empty description="暂无待接单工单" />
-          )}
-        </TabPane>
-        <TabPane tab="进行中" key="assigned">
-          {filteredAssignedTasks.length > 0 ? (
-            <List
-              itemLayout="horizontal"
-              dataSource={filteredAssignedTasks}
-              renderItem={task => (
-                <List.Item
-                  onClick={() => navigate(`/mobile/tasks/${task.id}`)}
-                  style={{ cursor: 'pointer' }}
-                  actions={[
-                    <Button
-                      type="primary"
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/mobile/tasks/${task.id}/complete`);
-                      }}
-                    >
-                      回单
-                    </Button>
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>{task.title}</span>
-                        {getStatusTag(task.status)}
-                      </div>
-                    }
-                    description={
-                      <div>
-                        <div>{task.description || '无描述'}</div>
-                        <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
-                          接单时间: {task.assigned_at ? new Date(task.assigned_at).toLocaleString() : '未知'}
-                        </div>
-                      </div>
-                    }
+                ) : (
+                  <Empty description="暂无待接单工单" />
+                )}
+              </>
+            )
+          },
+          {
+            key: 'assigned',
+            label: '进行中',
+            children: (
+              <>
+                {filteredAssignedTasks.length > 0 ? (
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={filteredAssignedTasks}
+                    renderItem={task => (
+                      <List.Item
+                        onClick={() => navigate(`/mobile/tasks/${task.id}`)}
+                        style={{ cursor: 'pointer' }}
+                        actions={[
+                          <Button
+                            type="primary"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/mobile/tasks/${task.id}/complete`);
+                            }}
+                          >
+                            回单
+                          </Button>
+                        ]}
+                      >
+                        <List.Item.Meta
+                          title={
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <span>{task.title}</span>
+                              {getStatusTag(task.status)}
+                            </div>
+                          }
+                          description={
+                            <div>
+                              <div>{task.description || '无描述'}</div>
+                              <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
+                                接单时间: {task.assigned_at ? new Date(task.assigned_at).toLocaleString() : '未知'}
+                              </div>
+                            </div>
+                          }
+                        />
+                      </List.Item>
+                    )}
                   />
-                </List.Item>
-              )}
-            />
-          ) : (
-            <Empty description="暂无进行中工单" />
-          )}
-        </TabPane>
-      </Tabs>
+                ) : (
+                  <Empty description="暂无进行中工单" />
+                )}
+              </>
+            )
+          }
+        ]}
+      />
     </div>
   );
 };
