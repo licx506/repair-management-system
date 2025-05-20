@@ -20,6 +20,24 @@ var/
 .installed.cfg
 *.egg
 
+# Database files
+*.db
+*.db.bak
+*.db.*bak
+database.db
+repair_management.db
+backend/repair_management.db
+backend/repair_management.db.*
+
+# Uploads and static files
+backend/uploads/
+backend/static/
+uploads/
+static/
+
+# Migrations
+backend/migrations/
+
 # Logs
 logs/
 *.log
@@ -32,6 +50,14 @@ node_modules/
 npm-debug.log
 yarn-debug.log
 yarn-error.log
+.pnpm-debug.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # IDE
 .idea/
@@ -42,3 +68,9 @@ yarn-error.log
 # OS
 .DS_Store
 Thumbs.db
+
+# Config
+.config/
+
+# CSV files
+*.csv
