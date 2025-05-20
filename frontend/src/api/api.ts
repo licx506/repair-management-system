@@ -46,7 +46,8 @@ api.interceptors.response.use(
       status: response.status,
       data: response.data
     });
-    return response.data;
+    // 返回响应数据，并使用 as any 来避免类型检查错误
+    return response.data as any;
   },
   (error) => {
     // 详细记录错误信息

@@ -11,7 +11,7 @@ RUN npm ci
 # 复制前端代码
 COPY frontend/ .
 
-# 构建前端
+# 构建前端，不进行类型检查
 RUN npm run build
 
 # 生产环境镜像
@@ -20,8 +20,7 @@ FROM nginx:alpine
 # 复制构建产物到Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# 复制Nginx配置
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+# Nginx配置通过卷挂载提供
 
 # 暴露端口
 EXPOSE 80

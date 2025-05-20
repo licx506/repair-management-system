@@ -3,9 +3,9 @@
 // 默认配置
 const defaultConfig = {
   // API服务器地址
-  apiBaseUrl: 'http://xin.work.gd:8000',
+  apiBaseUrl: 'http://localhost:8458',
   // 模板文件服务器地址
-  templateBaseUrl: 'http://xin.work.gd:8000',
+  templateBaseUrl: 'http://localhost:8458',
   // 其他配置项可以在这里添加
 };
 
