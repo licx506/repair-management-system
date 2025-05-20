@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: repair-management-backend
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - repair-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: repair-management-frontend
+    restart: unless-stopped
+    ports:
+      - "8458:80"
+    depends_on:
+      - backend
+    networks:
+      - repair-network
+
+networks:
+  repair-network:
+    driver: bridge
