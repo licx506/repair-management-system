@@ -2,10 +2,10 @@
 
 // 默认配置
 const defaultConfig = {
-  // API服务器地址
-  apiBaseUrl: 'http://localhost:8458',
-  // 模板文件服务器地址
-  templateBaseUrl: 'http://localhost:8458',
+  // API服务器地址 - 使用相对路径避免跨域问题
+  apiBaseUrl: '',
+  // 模板文件服务器地址 - 使用相对路径避免跨域问题
+  templateBaseUrl: '',
   // 其他配置项可以在这里添加
 };
 
