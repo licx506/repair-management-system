@@ -82,6 +82,122 @@ def fix_tasks_table():
     finally:
         conn.close()
 
+def fix_materials_table():
+    """修复materials表结构"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    try:
+        # 检查表是否存在
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='materials'")
+        if cursor.fetchone() is None:
+            print("materials表不存在，无需修复")
+            return False
+
+        # 检查列是否存在
+        cursor.execute("PRAGMA table_info(materials)")
+        columns = [col[1] for col in cursor.fetchall()]
+
+        # 添加缺失的列
+        missing_columns = []
+        if "category" not in columns:
+            missing_columns.append(("category", "VARCHAR"))
+        if "code" not in columns:
+            missing_columns.append(("code", "VARCHAR"))
+        if "description" not in columns:
+            missing_columns.append(("description", "TEXT"))
+        if "unit" not in columns:
+            missing_columns.append(("unit", "VARCHAR"))
+        if "unit_price" not in columns:
+            missing_columns.append(("unit_price", "FLOAT DEFAULT 0.0"))
+        if "supply_type" not in columns:
+            missing_columns.append(("supply_type", "VARCHAR"))
+        if "is_active" not in columns:
+            missing_columns.append(("is_active", "BOOLEAN DEFAULT 1"))
+        if "created_at" not in columns:
+            missing_columns.append(("created_at", "DATETIME DEFAULT CURRENT_TIMESTAMP"))
+        if "updated_at" not in columns:
+            missing_columns.append(("updated_at", "DATETIME DEFAULT CURRENT_TIMESTAMP"))
+
+        if not missing_columns:
+            print("materials表结构完整，无需修复")
+            return True
+
+        print(f"materials表缺少以下列: {[col[0] for col in missing_columns]}")
+
+        # 添加缺失的列
+        for col_name, col_type in missing_columns:
+            print(f"添加列 {col_name} ({col_type})")
+            cursor.execute(f"ALTER TABLE materials ADD COLUMN {col_name} {col_type}")
+
+        conn.commit()
+        print("materials表结构修复完成")
+        return True
+    except Exception as e:
+        conn.rollback()
+        print(f"修复materials表结构失败: {e}")
+        return False
+    finally:
+        conn.close()
+
+def fix_work_items_table():
+    """修复work_items表结构"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    try:
+        # 检查表是否存在
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='work_items'")
+        if cursor.fetchone() is None:
+            print("work_items表不存在，无需修复")
+            return False
+
+        # 检查列是否存在
+        cursor.execute("PRAGMA table_info(work_items)")
+        columns = [col[1] for col in cursor.fetchall()]
+
+        # 添加缺失的列
+        missing_columns = []
+        if "category" not in columns:
+            missing_columns.append(("category", "VARCHAR"))
+        if "project_number" not in columns:
+            missing_columns.append(("project_number", "VARCHAR"))
+        if "name" not in columns:
+            missing_columns.append(("name", "VARCHAR"))
+        if "unit" not in columns:
+            missing_columns.append(("unit", "VARCHAR"))
+        if "unit_price" not in columns:
+            missing_columns.append(("unit_price", "FLOAT DEFAULT 0.0"))
+        if "description" not in columns:
+            missing_columns.append(("description", "TEXT"))
+        if "is_active" not in columns:
+            missing_columns.append(("is_active", "BOOLEAN DEFAULT 1"))
+        if "created_at" not in columns:
+            missing_columns.append(("created_at", "DATETIME DEFAULT CURRENT_TIMESTAMP"))
+        if "updated_at" not in columns:
+            missing_columns.append(("updated_at", "DATETIME DEFAULT CURRENT_TIMESTAMP"))
+
+        if not missing_columns:
+            print("work_items表结构完整，无需修复")
+            return True
+
+        print(f"work_items表缺少以下列: {[col[0] for col in missing_columns]}")
+
+        # 添加缺失的列
+        for col_name, col_type in missing_columns:
+            print(f"添加列 {col_name} ({col_type})")
+            cursor.execute(f"ALTER TABLE work_items ADD COLUMN {col_name} {col_type}")
+
+        conn.commit()
+        print("work_items表结构修复完成")
+        return True
+    except Exception as e:
+        conn.rollback()
+        print(f"修复work_items表结构失败: {e}")
+        return False
+    finally:
+        conn.close()
+
 def main():
     """主函数"""
     if not os.path.exists(DB_PATH):
@@ -91,8 +207,10 @@ def main():
     # 备份数据库
     backup_database()
 
-    # 修复tasks表结构
+    # 修复各个表结构
     fix_tasks_table()
+    fix_materials_table()
+    fix_work_items_table()
 
     print("数据库结构修复完成")
     return True
