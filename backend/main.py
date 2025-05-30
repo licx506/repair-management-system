@@ -26,6 +26,14 @@ origins = [
     "http://xin.work.gd:8459",  # 外部访问备用端口
     "http://xin.work.gd:8000",  # 后端服务器
     "http://xin.work.gd",      # 域名根
+    "http://arm.work.gd:8458",  # 新的前端域名
+    "http://arm.work.gd:8459",  # 新的前端备用端口
+    "http://arm.work.gd:8000",  # 新的后端服务器
+    "http://arm.work.gd",      # 新的域名根
+    "https://arm.work.gd:8458", # HTTPS版本
+    "https://arm.work.gd:8459", # HTTPS备用端口
+    "https://arm.work.gd:8000", # HTTPS后端
+    "https://arm.work.gd",     # HTTPS域名根
     "*"                        # 允许所有源（开发环境使用，生产环境应该限制）
 ]
 

@@ -18,12 +18,12 @@ const Login: React.FC = () => {
       const response = await apiLogin(values);
       await login(response.access_token);
       message.success('登录成功');
-      
+
       // 根据设备类型和用户角色跳转到不同页面
       const isMobile = window.innerWidth <= 768;
       const user = localStorage.getItem('user');
       const userObj = user ? JSON.parse(user) : null;
-      
+
       if (userObj && userObj.role === 'admin') {
         navigate('/admin/dashboard');
       } else if (isMobile) {
@@ -40,10 +40,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       minHeight: '100vh',
       background: '#f0f2f5'
     }}>
@@ -54,7 +54,7 @@ const Login: React.FC = () => {
         </div>
         <Form
           name="login"
-          initialValues={{ remember: true }}
+          initialValues={{ username: 'admin', password: 'admin123', remember: true }}
           onFinish={onFinish}
           size="large"
         >
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
               登录
             </Button>
           </Form.Item>
-          
+
           <div style={{ textAlign: 'center' }}>
             <Link to="/register">没有账号？立即注册</Link>
           </div>
